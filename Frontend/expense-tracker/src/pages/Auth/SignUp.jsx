@@ -7,6 +7,7 @@ import ProfilePhotoSelector from "../../components/Inputs/ProfilePhotoSelector";
 import axiosInstance from "../../utils/axiosInstance";
 import { UserContext } from "../../context/UserContext";
 import uploadImage from "../../utils/uploadImage";
+import { API_PATHS } from "../../utils/apiPaths";
 
 const SignUp = () => {
   const [profilepic, setProfilePic] = React.useState(null);
@@ -60,6 +61,7 @@ const SignUp = () => {
       }
     }
     catch(err){
+      console.error("Error during sign up:", err);
       if(err.response && err.response.data.message){
         setError(err.response.data.message);
       }

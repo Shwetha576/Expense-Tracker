@@ -12,7 +12,6 @@ import Income from "./pages/Dashboard/Income";
 import Expense from "./pages/Dashboard/Expense";
 import UserProvider from "./context/UserContext";
 
-
 const App = () => {
   return (
     <UserProvider>

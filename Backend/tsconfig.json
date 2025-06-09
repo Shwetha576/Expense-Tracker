@@ -11,6 +11,6 @@
     "skipLibCheck": true, // skip checking of declaration files
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "routes"],
   "exclude": ["node_modules"]
 }

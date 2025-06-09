@@ -1,7 +1,7 @@
-const XLSX = require('xlsx');
-const Expense = require('../models/Expense');
+import XLSX from 'xlsx';
+import Expense from '../models/Expense';
 
-exports.addExpense = async (req, res) => {
+export const addExpense = async (req, res) => {
 
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
@@ -27,7 +27,7 @@ exports.addExpense = async (req, res) => {
     }
 };
 
-exports.getAllExpense = async (req, res) => {
+export const getAllExpense = async (req, res) => {
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
     try {
@@ -38,7 +38,7 @@ exports.getAllExpense = async (req, res) => {
     }   
 };
 
-exports.deleteExpense = async (req, res) => {
+export const deleteExpense = async (req, res) => {
 
     try{
         await Expense.findByIdAndDelete(req.params.id);
@@ -49,7 +49,7 @@ exports.deleteExpense = async (req, res) => {
     }
 };
 
-exports.downloadExpenseExcel = async (req, res) => {
+export const downloadExpenseExcel = async (req, res) => {
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
     try{
@@ -72,3 +72,4 @@ exports.downloadExpenseExcel = async (req, res) => {
         res.status(500).json({ message: 'Error downloading expense data', error });
     }
 };
+

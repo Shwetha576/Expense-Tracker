@@ -1,8 +1,8 @@
-const Income = require('../models/Income');
-const Expense = require('../models/Expense');
-const { Types } = require('mongoose');
+import Income from '../models/Income';
+import Expense from '../models/Expense';
+import { Types } from 'mongoose';
 
-exports.getDashboardData = async (req, res) => {
+export const getDashboardData = async (req, res) => {
     try{
         const userId = req.user._id;
         const userObjectId = new Types.ObjectId(String(userId));
@@ -50,7 +50,7 @@ exports.getDashboardData = async (req, res) => {
                     type: "expense"
                 })
             ),
-        ].sort((a, b) => b.date - a.date);
+        ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
         res.json({
             totalBalance:

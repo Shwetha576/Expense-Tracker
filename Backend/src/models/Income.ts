@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
+import { Schema, model } from 'mongoose';
 
-const IncomeSchema = new mongoose.Schema({
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+const IncomeSchema = new Schema({
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     icon: { type: String },
     source: { type: String, required: true },
     amount: { type: Number, required: true },
@@ -10,5 +10,5 @@ const IncomeSchema = new mongoose.Schema({
     timestamps: true,
 });
 
-module.exports = mongoose.model('Income', IncomeSchema);
+export default model('Income', IncomeSchema);
 // This code defines a Mongoose schema for an Income model in a Node.js application.

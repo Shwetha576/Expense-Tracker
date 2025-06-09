@@ -1,11 +1,13 @@
-const User = require('../models/User');
-const jwt = require('jsonwebtoken');
+import bcrypt from 'bcryptjs';
+import User from '../models/User';
+import jwt from 'jsonwebtoken';
+import { Types } from 'mongoose';
 
-const generateToken = (id) => {
+const generateToken = (id: Types.ObjectId) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {expiresIn: '2h'});
 }
 
-exports.registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
     const {name,email,password,profileImageUrl}= req.body;
 
     if(!name || !email || !password) {
@@ -23,7 +25,7 @@ exports.registerUser = async (req, res) => {
             profileImageUrl
         });
         res.status(201).json({
-            id: user.__id,
+            id: user._id,
             user,
             token: generateToken(user._id)
         });
@@ -35,7 +37,7 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-exports.loginUser = async (req, res) => {
+export const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -44,7 +46,7 @@ exports.loginUser = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        if (!user || !(await user.comparePassword(password))) {
+        if (!user || !(await bcrypt.compare(password, user.password))) {
             return res.status(401).json({ message: "Invalid credentials" });
         }
         res.status(200).json({
@@ -60,7 +62,7 @@ exports.loginUser = async (req, res) => {
     }
 };
 
-exports.getUserInfo = async (req, res) => {
+export const getUserInfo = async (req, res) => {
     try{
         const user = await User.findById(req.user.id).select("-password");
         if (!user) {

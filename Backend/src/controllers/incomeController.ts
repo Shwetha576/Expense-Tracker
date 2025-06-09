@@ -1,7 +1,7 @@
-const XLSX = require('xlsx');
-const Income = require('../models/Income');
+import XLSX from 'xlsx';
+import Income from '../models/Income';
 
-exports.addIncome = async (req, res) => {
+export const addIncome = async (req, res) => {
 
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
@@ -27,7 +27,7 @@ exports.addIncome = async (req, res) => {
     }
 };
 
-exports.getAllIncome = async (req, res) => {
+export const getAllIncome = async (req, res) => {
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
     try {
@@ -38,8 +38,8 @@ exports.getAllIncome = async (req, res) => {
     }   
 };
 
-exports.deleteIncome = async (req, res) => {
-  
+export const deleteIncome = async (req, res) => {
+
     try{
         await Income.findByIdAndDelete(req.params.id);
         res.json({ message: 'Income deleted successfully' });
@@ -49,7 +49,7 @@ exports.deleteIncome = async (req, res) => {
     }
 };
 
-exports.downloadIncomeExcel = async (req, res) => {
+export const downloadIncomeExcel = async (req, res) => {
     const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
 
     try{

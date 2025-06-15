@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "jsx": "react",
+    "jsx": "react-jsx",
     "target": "ES2020", // or your preferred target
     "module": "es2022", // for Node.js/Express
     "moduleResolution": "bundler", // module resolution strategy

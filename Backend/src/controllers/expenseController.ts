@@ -1,29 +1,34 @@
 import XLSX from 'xlsx';
 import Expense from '../models/Expense';
+import e from 'express';
+import mongoose from 'mongoose';
+import { error } from 'console';
 
 export const addExpense = async (req, res) => {
+    const { category, amount, date, icon } = req.body;
+    const userId = req.user._id;
+    const expenseId = new mongoose.Types.ObjectId(); // Generate a new ObjectId for the expense
 
-    const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
-
+    if(!mongoose.Types.ObjectId.isValid(expenseId)) {
+        return res.status(400).json({ message: 'Invalid expense ID' });
+    }
+    if (!category || !amount || !date) {
+        return res.status(400).json({ message: 'Please provide all required fields' });
+    }
     try {
-        const { icon, category, amount, date } = req.body;
-        
-        if(!category || !amount || !date){
-            return res.status(400).json({ message: 'Please fill all fields' });
-        }
-
         const newExpense = new Expense({
             userId,
-            icon, // Assuming file upload middleware is used
             category,
             amount,
-            date: new Date(date), // Default to current date if not provided
+            date: new Date(date), // Ensure date is stored as a Date object
+            icon,
+            expenseId
         });
 
-        await newExpense.save();
-        res.status(200).json(newExpense);
+        const savedExpense = await newExpense.save();
+        res.status(201).json(savedExpense);
     } catch (error) {
-        res.status(500).json({ message: 'Error adding expense', error });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -38,6 +43,51 @@ export const getAllExpense = async (req, res) => {
     }   
 };
 
+export const getExpenseById = async (req, res) => {
+    const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
+    const expenseId = req.params.id;
+    try {
+        const expense = await Expense.findById({ _id: expenseId, userId });
+        // Check if expense exists
+        if (!expense) {
+            return res.status(404).json({ message: 'Expense not found' });
+        }
+        const formattedExpense = {
+            ...expense.toObject(),
+            date: expense.date.toISOString().split('T')[0], // Format date to YYYY-MM-DD
+        };
+        res.json(formattedExpense);
+    }
+    catch (error) {
+        res.status(500).json({ message: 'Error fetching expense', error });
+    }
+};
+
+export const updateExpense = async (req, res) => {
+    const userId = req.user._id; // Assuming user ID is stored in req.user after authentication
+    const id = req.params.id;
+    try {
+        const { icon, category, amount, date } = req.body;
+        if(!category || !amount || !date){
+            return res.status(400).json({ message: 'Please fill all fields' });
+        }
+
+        const updatedExpense = await Expense.findByIdAndUpdate(
+            { _id: id, userId },
+            { icon, category, amount, date: new Date(date) },
+            { new: true }
+        );
+
+        if (!updatedExpense) {
+            return res.status(404).json({ message: 'Expense not found' });
+        }
+
+        res.json(updatedExpense);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 export const deleteExpense = async (req, res) => {
 
     try{
@@ -45,7 +95,7 @@ export const deleteExpense = async (req, res) => {
         res.json({ message: 'Expense deleted successfully' });
     }
     catch(error){
-        res.status(500).json({ message: 'Error deleting expense' });
+        res.status(500).json({ message: 'Error deleting expense', error });
     }
 };
 
@@ -59,7 +109,7 @@ export const downloadExpenseExcel = async (req, res) => {
         const data = expense.map((item) => ({
             Category: item.category,
             Amount: item.amount,
-            Date: item.date, // Format date as YYYY-MM-DD
+            Date: new Date(item.date).toLocaleDateString('en-GB'), // Format date to DD/MM/YYYY
         }));
 
         const wb = XLSX.utils.book_new();
@@ -72,4 +122,3 @@ export const downloadExpenseExcel = async (req, res) => {
         res.status(500).json({ message: 'Error downloading expense data', error });
     }
 };
-

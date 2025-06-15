@@ -1,23 +1,39 @@
 import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+
+// Ensure the uploads directory exists
+const uploadDir = 'uploads/'; // Directory to save uploaded images
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploads/');
-    },
-    filename:(req, file, cb)=>{
-        cb(null, `${Date.now()}-${file.originalname}`);
-    }
+  destination: (req, file, cb) => {
+    cb(null, uploadDir); // Directory to save uploaded files
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
 });
 
-const fileFilter = (req, file, cb) => {
-    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
-    if (allowedTypes.includes(file.mimetype)) {
-        cb(null, true);
+export const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png|gif/;
+    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = fileTypes.test(file.mimetype);
+
+    console.log('File type:', file.mimetype);
+    console.log('File extension:', path.extname(file.originalname).toLowerCase());
+    console.log('File:', file.buffer);
+
+    if (extname && mimetype) {
+      cb(null, true);
     } else {
-        cb(new Error('Invalid file type. Only JPEG, PNG, and JPG are allowed.'), false);
+      cb(new Error('Invalid file type. Only JPEG, JPG, PNG, and GIF are allowed.'));
     }
-};
+  },
+});
 
-const upload = multer({ storage, fileFilter });
-
-export default upload;

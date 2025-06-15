@@ -9,9 +9,8 @@ const generateToken = (id: Types.ObjectId) => {
 
 export const registerUser = async (req, res) => {
     const {name,email,password,profileImageUrl}= req.body;
-
-    if(!name || !email || !password) {
-        return res.status(400).json({message: "Please fill all the fields"});
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: "Please fill all the fields" });
     }
     try{
         const existingUser = await User.findOne({ email });
@@ -24,12 +23,14 @@ export const registerUser = async (req, res) => {
             password,
             profileImageUrl
         });
+        console.log("User created:", user);
         res.status(201).json({
             id: user._id,
             user,
             token: generateToken(user._id)
         });
     } catch (err) {
+        console.error("Error registering user:", err);
         res.status(500).json({
             message: "Error registering user",
             error: err.message

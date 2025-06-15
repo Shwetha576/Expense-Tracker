@@ -2,7 +2,8 @@
   "compilerOptions": {
     "jsx": "react",
     "target": "ES2020", // or your preferred target
-    "module": "commonjs", // for Node.js/Express
+    "module": "es2022", // for Node.js/Express
+    "moduleResolution": "bundler", // module resolution strategy
     "outDir": "./dist", // output directory for compiled files
     "rootDir": "./src", // source directory
     "strict": false, // start with loose type checking

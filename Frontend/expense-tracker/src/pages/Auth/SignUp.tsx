@@ -14,14 +14,14 @@ const SignUp = () => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const [error, setError] = React.useState(null);
+  const [error, setError] = React.useState<string>("");
 
   const { updateUser } = React.useContext(UserContext);
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-    let profileImageURl="";
+    let profileImageUrl="";
     if (!name) {
       setError("Please enter your name...");
       return;
@@ -42,14 +42,14 @@ const SignUp = () => {
 
       if(profilepic){
         const imgUploadRes = await uploadImage(profilepic);
-        profileImageURl = imgUploadRes.imageUrl || "";
+        profileImageUrl = imgUploadRes.imageUrl || "";
       }
 
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         name,
         email,
         password,
-        profileImageURl,
+        profileImageUrl,
       });
 
       const { token, user } = response.data;

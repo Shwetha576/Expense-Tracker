@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "target": "ES2020", // or your preferred target
+    "module": "commonjs", // for Node.js/Express
+    "outDir": "./dist", // output directory for compiled files
+    "rootDir": "./src", // source directory
+    "strict": false, // start with loose type checking
+    "allowJs": true, // allow JavaScript files to be compiled
+    "checkJs": false, // disable type checking for JS files initially
+    "esModuleInterop": true, // for better module compatibility
+    "skipLibCheck": true, // skip checking of declaration files
+    "forceConsistentCasingInFileNames": true,
+    "types": [
+      "vite/client"
+    ]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
+}

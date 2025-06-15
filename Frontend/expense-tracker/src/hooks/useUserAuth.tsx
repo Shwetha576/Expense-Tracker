@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 import  axiosInstance  from "../utils/axiosInstance";
 import { API_PATHS } from "../utils/apiPaths";
 
-export const useUserAuth = () => {
+const useUserAuth = () => {
     const {user, updateUser, clearUser} = React.useContext(UserContext);
     const navigate = useNavigate();
 
@@ -36,3 +36,5 @@ export const useUserAuth = () => {
         };
     }, [user, updateUser, clearUser, navigate]);
 }
+
+export default useUserAuth;

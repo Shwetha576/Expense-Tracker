@@ -1,7 +1,7 @@
 import React from "react";
 import { SIDE_MENU_DATA } from "../../utils/data"
 import { UserContext } from "../../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { To, useNavigate } from "react-router-dom";
 import CharAvatar from "../Cards/CharAvatar";
 
 
@@ -10,8 +10,8 @@ const SideMenu =({ activeMenu }) => {
 
     const navigate = useNavigate();
 
-    const handleClick = (route)=> {
-        if(route === "logout"){
+    const handleClick = (route: To)=> {
+        if(route === "/logout"){
             handleLogout();
             return;
         }

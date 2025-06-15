@@ -16,8 +16,8 @@ const Login = () => {
   const { updateUser } = React.useContext(UserContext);
 
   const navigate = useNavigate();
-  
-  const handleLogin = async (e) => {
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!validateEmail(email)) {

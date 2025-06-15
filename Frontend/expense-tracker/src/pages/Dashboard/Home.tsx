@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
-import { useUserAuth } from "../../hooks/useUserAuth";
+import useUserAuth from "../../hooks/useUserAuth";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -9,13 +9,31 @@ import { IoMdCard } from "react-icons/io";
 import{ LuHandCoins, LuWalletMinimal } from "react-icons/lu"
 import { addThousandSeparator } from "../../utils/helper";
 import RecentTransactions from "../../components/Dashboard/RecentTransactions";
+import FinanceOverview from "../../components/Dashboard/FinanceOverview";
+import ExpenseTransactions from "../../components/Dashboard/ExpenseTransactions";
+import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
+import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
+import RecentIncome from "../../components/Dashboard/RecentIncome";
 
 const Home = () => {
   useUserAuth();
 
   const navigate = useNavigate();
 
-  const [dashboardData, setDashboardData] = React.useState(null);
+  interface DashboardData {
+    totalBalance: number;
+    totalIncome: number;
+    totalExpenses: number;
+    recentTransactions: any[]; // Replace 'any' with your transaction type if available
+    last30DaysExpenses?: {
+      transactions: any[]; // Replace 'any' with your transaction type if available
+    };
+    last60DaysIncome?: {
+      transactions: any[]; // Replace 'any' with your transaction type if available
+    };
+  }
+  
+  const [dashboardData, setDashboardData] = React.useState<DashboardData | null>(null);
   const [loading, setLoading] = React.useState(false);
 
   const fetchDashboardData = async() => {
@@ -73,6 +91,31 @@ const Home = () => {
           <RecentTransactions
             transactions={dashboardData?.recentTransactions}
             onSeeMore={() =>navigate("/expense")}
+          />
+
+          <FinanceOverview
+            totalBalance={dashboardData?.totalBalance || 0}
+            totalIncome={dashboardData?.totalIncome || 0}
+            totalExpenses={dashboardData?.totalExpenses || 0}
+          />
+
+          <ExpenseTransactions
+            transactions={dashboardData?.last30DaysExpenses?.transactions || []}
+            onSeeMore={() => navigate("/expense")}
+          />
+
+          <Last30DaysExpenses
+            data={dashboardData?.last30DaysExpenses?.transactions || []}
+          />
+
+          <RecentIncomeWithChart 
+            data={dashboardData?.last60DaysIncome?.transactions.slice(0, 4) || []}
+            totalIncome={dashboardData?.totalIncome || 0}
+          />
+
+          <RecentIncome
+            transactions={dashboardData?.last60DaysIncome?.transactions || []}
+            onSeeMore={() => navigate("/income")}
           />
         </div>
       </div>

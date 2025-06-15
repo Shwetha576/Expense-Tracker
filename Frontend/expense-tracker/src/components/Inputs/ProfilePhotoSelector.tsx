@@ -2,11 +2,12 @@ import React from "react";
 import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
 
 const ProfilePhotoSelector = ({ image, setImage }) => {
-    const inputRef = React.useRef(null);
-    const [previewURL, setPreviewURL] = React.useState(null);
+    const inputRef = React.useRef<HTMLInputElement>(null);
+    const [previewURL, setPreviewURL] = React.useState<string | null>(null);
 
     const handleImageChange = (e) => {
-        const file = event.target.files[0];
+        const target = e.target as HTMLInputElement | null;
+        const file = target && target.files ? target.files[0] : null;
         if (file){
             setImage(file);
             const preview = URL.createObjectURL(file);
@@ -19,7 +20,9 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
         setPreviewURL(null);
     };
     const ChooseFile = () => {
-        inputRef.current.click();
+        if (inputRef.current) {
+            inputRef.current.click();
+        }
     }
     return(
         <div className="flex justify-center mb-6">
@@ -45,7 +48,7 @@ const ProfilePhotoSelector = ({ image, setImage }) => {
             ) : (
                 <div className="relative">
                     <img 
-                        src={previewURL}
+                        src={previewURL ?? undefined}
                         alt="Profile"
                         className="w-20 h-20 rounded-full object-cover"
                     />

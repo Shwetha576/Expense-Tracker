@@ -1,4 +1,3 @@
-import { data } from "react-router-dom";
 import moment from "moment";
 
 export const validateEmail = (email: string) => {
@@ -35,15 +34,16 @@ type IncomeItem = { source: string; amount: number };
 
 export const prepareExpenseBarChartData = (data: ExpenseItem[] = []) => {
     const chartData = data.map((item) => ({
-        category: item.category,
+        name: item.category,
         amount: item.amount,
     }));
     return chartData;
 };
 
-type IncomeBarChartItem = { date: string; amount: number; source: string };
+export type IncomeBarChartItem = { date: string; amount: number; source: string };
+export type IncomeBarChartData = { month: string; amount: number; source: string };
 
-export const prepareIncomeBarChartData = (data: IncomeBarChartItem[] = []) => {
+export const prepareIncomeBarChartData = (data: IncomeBarChartItem[] = []): IncomeBarChartData[] => {
     const sortedData = [...data].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
     const chartData = sortedData.map((item) => ({

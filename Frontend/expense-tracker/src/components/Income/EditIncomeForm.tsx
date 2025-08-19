@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Input from "../Inputs/Input";
 import EmojiPickerPopup from "../EmojiPickerPopup";
+import { Income } from "./AddIncomeForm";
 
 interface EditIncomeProps {
-    income: any;
-    onEditIncome: (income: any) => void;
+    income: Income & { id: string }; // This should be the income to edit, with an _id field
+    onEditIncome: (income: Income) => void;
 }
 
 const EditIncomeForm = (props: EditIncomeProps) => {
@@ -24,27 +25,28 @@ const EditIncomeForm = (props: EditIncomeProps) => {
             amount: props.income.amount || "",
             date: props.income.date || "",
             icon: props.income.icon || "",
-            id: props.income._id || ""
+            id: props.income.id || ""
         };
         setIncome(fetchedIncome);
 
     }, [props.income]);
 
 
-    const handleChange =(key, value) => setIncome({...income, [key]: value});
-
+    const handleChange =(key: keyof Income, value: string) => {
+        setIncome({...income, [key]: value});
+    };
 
     return (
         <div>
 
             <EmojiPickerPopup 
                 icon={income.icon}
-                onSelect={(selectedicon) => handleChange("icon", selectedicon)}
+                onSelect={(selectedicon: string) => handleChange("icon", selectedicon)}
             />
 
             <Input
                 value={income.source}
-                onChange={({target}) => handleChange("source", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("source", target.value)}
                 label="Income Source"
                 placeholder="Enter income source"
                 type="text"
@@ -52,14 +54,14 @@ const EditIncomeForm = (props: EditIncomeProps) => {
 
             <Input
                 value={income.amount}
-                onChange={({target}) => handleChange("amount", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("amount", target.value)}
                 label="Amount"
                 placeholder="Enter amount"
                 type="number"
             />
             <Input
                 value={income.date}
-                onChange={({target}) => handleChange("date", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("date", target.value)}
                 label="Date"
                 placeholder="Enter date"
                 type="date"

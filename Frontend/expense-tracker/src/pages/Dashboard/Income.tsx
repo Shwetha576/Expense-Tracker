@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -18,7 +18,10 @@ const Income = () => {
 
   const [incomeData, setIncomeData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
-  const [openDeleteAlert, setOpenDeleteAlert] = React.useState({
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<{
+    show: boolean;
+    data: any | null;
+  }>({
     show: false,
     data: null,
   });
@@ -82,7 +85,7 @@ const Income = () => {
       toast.success("Income added successfully");
       fetchIncomeData();
     }
-    catch (error) {
+    catch (error: any) {
       console.error(
         "Error adding income:",
         error.response?.data?.message || error.message
@@ -134,7 +137,7 @@ function getIncomeById(incomeId: any) {
       setOpenEditIncomeModal(false);
       toast.success("Income updated successfully");
       fetchIncomeData();
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.response?.data?.message);
     }
   };
@@ -147,7 +150,7 @@ function getIncomeById(incomeId: any) {
       toast.success("Income deleted successfully");
       fetchIncomeData();
     }
-    catch (error) {
+    catch (error: any) {
       console.error(
         "Error deleting income:",
         error.response?.data?.message || error.message
@@ -172,7 +175,7 @@ function getIncomeById(incomeId: any) {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       toast.success("Income details downloaded successfully");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error downloading income details:", error.response?.data?.message || error.message);
       toast.error("Failed to download income details");
     }
@@ -181,8 +184,6 @@ function getIncomeById(incomeId: any) {
 
   useEffect(() => {
     fetchIncomeData();
-
-    return () => {};
   }, []);
 
 

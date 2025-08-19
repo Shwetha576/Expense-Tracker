@@ -1,4 +1,3 @@
-import React from "react";
 import { 
     BarChart,
     Bar,
@@ -6,20 +5,22 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Legend,
     ResponsiveContainer,
     Cell
  } from 'recharts';
-import CustomTooltip from "./CustomTooltip";
+import { Transaction } from '../Dashboard/ExpenseTransactions';
 
+interface CustomBarChartProps {
+    data: Transaction[];
+}
 
-const CustomBarChart = ({ data }) => {
-    
-    const getBarColor = (index) => {
+const CustomBarChart = ({ data }: CustomBarChartProps) => {
+
+    const getBarColor = (index: number) => {
         return index % 2 === 0 ? '#875cf5' : '#cfbefb';
     };
 
-    const CustomTooltip = ({ active, payload }) => {
+    const CustomTooltip = ({ active, payload }: { active: boolean; payload: any[] }) => {
         if(active && payload && payload.length){
             return(
                 <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">

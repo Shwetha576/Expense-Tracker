@@ -2,8 +2,15 @@ import React from "react";
 import { LuArrowRight } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
 import moment from "moment";
+import { Transaction } from "./ExpenseTransactions";
 
-const RecentIncome =({transactions, onSeeMore}:{ transactions: any; onSeeMore: any; }) => {
+
+interface RecentIncomeProps {
+    transactions: Transaction[];
+    onSeeMore: () => void;
+}
+
+const RecentIncome =({transactions, onSeeMore}: RecentIncomeProps) => {
     return (
         <div className="card">
             <div className="flex items-center justify-between">

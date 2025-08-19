@@ -2,9 +2,14 @@ import React from "react";
 import { LuArrowRight } from "react-icons/lu";
 import moment from "moment";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
+import { Transaction } from "./ExpenseTransactions";
 
+interface RecentTransactionsProps {
+    transactions: Transaction[];
+    onSeeMore: () => void;
+}
 
-const RecentTransactions =({transactions, onSeeMore}) => {
+const RecentTransactions =({transactions, onSeeMore}: RecentTransactionsProps) => {
     return(
         <div className="card">
             <div className="flex items-center justify-between ">
@@ -14,14 +19,14 @@ const RecentTransactions =({transactions, onSeeMore}) => {
                 </button>
             </div>
             <div className="mt-6">
-                {transactions?.slice(0,5).map((item: { _id: React.Key | null | undefined; type: unknown; category: unknown; source: unknown; icon: unknown; date: moment.MomentInput; amount: unknown; })=>
+                {transactions?.slice(0,5).map(transaction =>
                     <TransactionInfoCard
-                        key={item._id}
-                        title={item.type == "expense" ? item.category : item.source}
-                        icon={item.icon}
-                        date={moment(item.date).format("DD MM YYYY")}
-                        amount={item.amount}
-                        type={item.type}
+                        key={transaction._id}
+                        title={transaction.type == "expense" ? transaction.category : transaction.source}
+                        icon={transaction.icon}
+                        date={moment(transaction.date).format("DD MM YYYY")}
+                        amount={transaction.amount}
+                        type={transaction.type as "income" | "expense"}
                         onDelete={undefined}
                         hideEditBtn={undefined}
                         onEdit={undefined}

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { ChangeEvent } from "react";
 import { LuUser, LuUpload, LuTrash } from "react-icons/lu";
 
-const ProfilePhotoSelector = ({ image, setImage }) => {
+interface ProfilePhotoSelectorProps {
+    image: File | null;
+    setImage: (file: File | null) => void;
+}
+
+const ProfilePhotoSelector = ({ image, setImage }: ProfilePhotoSelectorProps) => {
     const inputRef = React.useRef<HTMLInputElement>(null);
     const [previewURL, setPreviewURL] = React.useState<string | null>(null);
 
-    const handleImageChange = (e) => {
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement | null;
         const file = target && target.files ? target.files[0] : null;
         if (file){

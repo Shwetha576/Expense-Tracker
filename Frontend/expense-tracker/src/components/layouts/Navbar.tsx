@@ -1,10 +1,13 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import SideMenu from "./SideMenu";
 import{ HiOutlineMenu, HiOutlineX} from "react-icons/hi";
 
+interface NavbarProps {
+    activeMenu: string;
+}
 
-const Navbar =({ activeMenu }) => {
-    const [openSideMenu, setOpenSideMenu] = React.useState(false);
+const Navbar =({ activeMenu }: NavbarProps) => {
+    const [openSideMenu, setOpenSideMenu] = useState(false);
     return (
         <div className="flex gap-5 bg-white border border-b border-gray-200/50 backdrop-blur-[2px] py-5 px-7 sticky top-0 z-30">
             <button className="block lg:hidden text-black"

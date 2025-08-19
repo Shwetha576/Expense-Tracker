@@ -1,4 +1,4 @@
-import React, { Profiler } from "react";
+import React, { FormEvent, Profiler } from "react";
 import AuthLayout from "../../components/layouts/AuthLayout";
 import { Link, useNavigate } from "react-router-dom";
 import Input from "../../components/Inputs/Input";
@@ -10,7 +10,7 @@ import uploadImage from "../../utils/uploadImage";
 import { API_PATHS } from "../../utils/apiPaths";
 
 const SignUp = () => {
-  const [profilepic, setProfilePic] = React.useState(null);
+  const [profilepic, setProfilePic] = React.useState<File | null>(null);
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -19,9 +19,9 @@ const SignUp = () => {
   const { updateUser } = React.useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e: FormEvent) => {
     e.preventDefault();
-    let profileImageUrl="";
+    let profileImageUrl = "";
     if (!name) {
       setError("Please enter your name...");
       return;
@@ -60,7 +60,7 @@ const SignUp = () => {
         navigate("/dashboard");
       }
     }
-    catch(err){
+    catch(err: any){
       console.error("Error during sign up:", err);
       if(err.response && err.response.data.message){
         setError(err.response.data.message);
@@ -84,14 +84,14 @@ const SignUp = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input 
               value={name}
-              onChange={({target}) => setName(target.value)}
+              onChange={({ target }: { target: HTMLInputElement }) => setName(target.value)}
               label="User Name"
               placeholder="Enter your name"
               type="text"
             />
             <Input
               value={email}
-              onChange={({target}) => setEmail(target.value)}
+              onChange={({ target }: { target: HTMLInputElement }) => setEmail(target.value)}
               label="Email Address"
               placeholder="example@gmail.com"
               type="text"
@@ -99,7 +99,7 @@ const SignUp = () => {
             <div className="cols-span-1 md:col-span-2">
               <Input
               value={password}
-              onChange={({target}) => setPassword(target.value)}
+              onChange={({ target }: { target: HTMLInputElement }) => setPassword(target.value)}
               label="Password"
               placeholder="Minimum 8 characters"
               type="password"

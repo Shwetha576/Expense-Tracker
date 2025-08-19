@@ -1,28 +1,16 @@
 import React, { useEffect } from "react";
 import CustomPieChart from "../Charts/CustomPieChart";
+import { Transaction } from "./ExpenseTransactions";
 
+interface RecentIncomeWithChartProps {
+    data: Transaction[];
+    totalIncome: number;
+
+}
 
 const COLORS = ["#875CF5", "#FA2C37", "#FF6900", "#4f39f6"];
 
-const RecentIncomeWithChart =({data,totalIncome}) => {
-
-    const [chartData, setChartData] = React.useState<{ name: string; amount: number }[]>([]);
-
-    const prepareChartData = (data: any[]) => {
-        const dataAr = data?.map((item) => ({
-            name: item.source,
-            amount: item.amount
-        }));
-        setChartData(dataAr);
-    };
-    
-    useEffect(() => {
-        prepareChartData(data);
-        return () => {
-            setChartData([]);
-        };
-    }, [data]);
-
+const RecentIncomeWithChart =({data,totalIncome}: RecentIncomeWithChartProps) => {
     return(
         <div className="card">
             <div className="flex items-center justify-between">
@@ -30,9 +18,9 @@ const RecentIncomeWithChart =({data,totalIncome}) => {
             </div>
 
             <CustomPieChart
-                data={chartData}
+                data={data}
                 label="Total Income"
-                totalAmount={`₹${totalIncome}`}
+                totalAmount={totalIncome}
                 showTextAnchor={true}
                 colors={COLORS}
             />

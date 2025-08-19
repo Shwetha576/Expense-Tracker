@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../components/layouts/DashboardLayout";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -15,15 +15,18 @@ const Expense = () => {
 
   useUserAuth();
 
-  const [expenseData, setExpenseData] = React.useState([]);
-  const [loading, setLoading] = React.useState(false);
-  const [openDeleteAlert, setOpenDeleteAlert] = React.useState({
+  const [expenseData, setExpenseData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [openDeleteAlert, setOpenDeleteAlert] = useState<{
+    show: boolean;
+    data: any | null;
+  }>({
     show: false,
     data: null,
   });
-  const [openAddExpenseModal, setOpenAddExpenseModal] = React.useState(false);
-  const [openEditExpenseModal, setOpenEditExpenseModal] = React.useState(false);
-  const [selectedExpense, setSelectedExpense] = React.useState({
+  const [openAddExpenseModal, setOpenAddExpenseModal] = useState(false);
+  const [openEditExpenseModal, setOpenEditExpenseModal] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState({
     id: "",
     category: "",
     amount: "",
@@ -81,7 +84,7 @@ const Expense = () => {
       toast.success("Expense added successfully");
       fetchExpenseData();
     }
-    catch (error) {
+    catch (error: any) {
       console.error(
         "Error adding expense:",
         error.response?.data?.message || error.message
@@ -133,7 +136,7 @@ function getExpenseById(expenseId: any) {
       setOpenEditExpenseModal(false);
       toast.success("Expense updated successfully");
       fetchExpenseData();
-    } catch (error) {
+    } catch (error: any) {
       console.log(error.response?.data?.message);
     }
   };
@@ -146,7 +149,7 @@ function getExpenseById(expenseId: any) {
       toast.success("Expense deleted successfully");
       fetchExpenseData();
     }
-    catch (error) {
+    catch (error: any) {
       console.error(
         "Error deleting expense:",
         error.response?.data?.message || error.message
@@ -171,7 +174,7 @@ function getExpenseById(expenseId: any) {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       toast.success("Expense details downloaded successfully");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error downloading expense details:", error.response?.data?.message || error.message);
       toast.error("Failed to download expense details");
     }

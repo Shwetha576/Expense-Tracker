@@ -9,9 +9,23 @@ import{
 } from "recharts";
 import CustomTooltip from "../Charts/CustomTooltip";
 import CustomLegend from "./CustomLegend";
+import { Transaction } from "../Dashboard/ExpenseTransactions";
 
+// export interface DataItem {
+//     name: string;
+//     color?: string; // Optional, used for legend colors
+//     amount: number;
+// }
 
-const CustomPieChart =({data, label, totalAmount, colors, showTextAnchor}) => {
+interface CustomPieChartProps {
+    data: Transaction[];
+    label: string;
+    totalAmount: number;
+    colors: string[];
+    showTextAnchor: boolean;
+}
+
+const CustomPieChart =({data, label, totalAmount, colors, showTextAnchor}: CustomPieChartProps) => {
     return (
         <ResponsiveContainer width="100%" height={350}>
             <PieChart>
@@ -25,7 +39,7 @@ const CustomPieChart =({data, label, totalAmount, colors, showTextAnchor}) => {
                     innerRadius={100}
                     labelLine={false}
                 >
-                {data.map((entry: any, index: number) => (
+                {data.map((_, index) => (
                     <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
                 ))}
                 </Pie>
@@ -33,23 +47,26 @@ const CustomPieChart =({data, label, totalAmount, colors, showTextAnchor}) => {
                 <Legend content={<CustomLegend payload={data} />} />
 
                 {showTextAnchor && (
-                    <><text
-                        x="50%"
-                        y="50%"
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        className="text-lg font-semibold text-gray-800"
-                    >
-                        {label}
-                    </text><text
-                        x="50%"
-                        y="50%"
-                        textAnchor="middle"
-                        dominantBaseline="central"
-                        className="text-2xl font-bold text-gray-800"
-                    >
+                    <>
+                        <text
+                            x="50%"
+                            y="50%"
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            className="text-lg font-semibold text-gray-800 bg-red-500"
+                        >
+                            {label}
+                        </text>
+                        <text
+                            x="50%"
+                            y="50%"
+                            textAnchor="middle"
+                            dominantBaseline="central"
+                            className="text-2xl font-bold text-gray-800 bg-red-500"
+                        >
                             {totalAmount}
-                        </text></>
+                        </text>
+                    </>
                 )}
             </PieChart>
         </ResponsiveContainer>

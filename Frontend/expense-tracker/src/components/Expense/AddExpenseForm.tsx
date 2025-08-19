@@ -1,17 +1,31 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import Input from "../Inputs/Input";
 import EmojiPickerPopup from "../EmojiPickerPopup";
 
-const AddExpenseForm =({onAddExpense}) => {
+export interface Expense {
+    category: string;
+    amount: string;
+    date: string;
+    icon: string;
+    id?: string; // Optional for AddExpense, required for EditExpense
+}
 
-    const [expense, setExpense] = React.useState({
+interface AddExpenseProps {
+    onAddExpense: (expense: Expense) => void;
+}
+
+const AddExpenseForm =({onAddExpense}: AddExpenseProps) => {
+
+    const [expense, setExpense] = useState<Expense>({
         category: "",
         amount: "",
         date: "",
         icon: ""
     });
 
-    const handleChange =(key, value) => setExpense({...expense, [key]: value});
+    const handleChange = (key: keyof Expense, value: string) => {
+        return setExpense({ ...expense, [key]: value });
+    };
 
 
     return (
@@ -19,13 +33,13 @@ const AddExpenseForm =({onAddExpense}) => {
 
             <EmojiPickerPopup 
                 icon={expense.icon}
-                onSelect={(selectedicon) => handleChange("icon", selectedicon)}
+                onSelect={(selectedicon: string) => handleChange("icon", selectedicon)}
             />
 
 
             <Input
                 value={expense.category}
-                onChange={({target}) => handleChange("category", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("category", target.value)}
                 label="Expense Category"
                 placeholder="Enter expense category"
                 type="text"
@@ -33,14 +47,14 @@ const AddExpenseForm =({onAddExpense}) => {
 
             <Input
                 value={expense.amount}
-                onChange={({target}) => handleChange("amount", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("amount", target.value)}
                 label="Amount"
                 placeholder="Enter amount"
                 type="number"
             />
             <Input
                 value={expense.date}
-                onChange={({target}) => handleChange("date", target.value)}
+                onChange={({target}: ChangeEvent<HTMLInputElement>) => handleChange("date", target.value)}
                 label="Date"
                 placeholder="Enter date"
                 type="date"

@@ -1,21 +1,20 @@
 {
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "target": "ES2020", // or your preferred target
-    "module": "es2022", // for Node.js/Express
-    "moduleResolution": "bundler", // module resolution strategy
-    "outDir": "./dist", // output directory for compiled files
-    "rootDir": "./src", // source directory
-    "strict": false, // start with loose type checking
-    "allowJs": true, // allow JavaScript files to be compiled
-    "checkJs": false, // disable type checking for JS files initially
-    "esModuleInterop": true, // for better module compatibility
-    "skipLibCheck": true, // skip checking of declaration files
-    "forceConsistentCasingInFileNames": true,
-    "types": [
-      "vite/client"
-    ]
+    "target": "ES2022", // Modern target for Vite
+    "module": "esnext", // Required for import.meta support
+    "moduleResolution": "bundler", // Recommended for Vite
+    "jsx": "react-jsx", // Modern JSX transform for React
+    "outDir": "./dist", // Output directory (optional for Vite, as it handles builds)
+    "rootDir": "./src", // Source directory
+    "strict": true, // Enable strict type checking for better safety
+    "esModuleInterop": true, // For module compatibility
+    "skipLibCheck": true, // Skip checking declaration files
+    "forceConsistentCasingInFileNames": true, // Ensure consistent file naming
+    "allowJs": true, // Allow JavaScript files (if needed)
+    "checkJs": false, // Disable type checking for JS files
+    "types": ["vite/client"], // Include Vite types
+    "resolveJsonModule": true // Optional: for importing JSON files
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist"]
 }

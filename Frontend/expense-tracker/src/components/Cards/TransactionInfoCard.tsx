@@ -7,12 +7,25 @@ import {
     LuPencil 
 } from "react-icons/lu";
 
-const TransactionInfoCard = ({ title, icon, date, amount, type, hideDeleteBtn, onDelete, hideEditBtn, onEdit }) => {
+interface TransactionInfoCardProps {
+    title: string;
+    icon?: string;
+    date: string;
+    amount: number;
+    type: "income" | "expense";
+    hideDeleteBtn?: boolean;
+    onDelete?: () => void;
+    hideEditBtn?: boolean;
+    onEdit?: () => void;
+}
+
+const TransactionInfoCard = ({ title, icon, date, amount, type, hideDeleteBtn, onDelete, hideEditBtn, onEdit }: TransactionInfoCardProps) => {
     const getAmountStyle = () =>
         type === "income" ? "bg-green-50 text-green-500" : "bg-red-50 text-red-500";
 
-    return <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/60">
-             <div className="w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full">
+    return (
+        <div className="group relative flex items-center gap-4 mt-2 p-3 rounded-lg hover:bg-gray-100/60">
+            <div className="w-12 h-12 flex items-center justify-center text-xl text-gray-800 bg-gray-100 rounded-full">
                 {icon ? (
                     <img
                         src={icon} alt="icon" className="w-6 h-6" />
@@ -49,5 +62,6 @@ const TransactionInfoCard = ({ title, icon, date, amount, type, hideDeleteBtn, o
                 </div>
              </div>
         </div>
+    );
 }
 export default TransactionInfoCard;

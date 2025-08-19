@@ -3,7 +3,13 @@ import CustomPieChart from "../Charts/CustomPieChart";
 
 const COLORS = ["#875CF5", "#FF6900", "#FA2C37"];
 
-const FinanceOverview = ({totalBalance, totalIncome, totalExpenses}) => {
+interface FinanceOverviewProps {
+    totalBalance: number;
+    totalIncome: number;
+    totalExpenses: number;
+}
+
+const FinanceOverview = ({totalBalance, totalIncome, totalExpenses}: FinanceOverviewProps) => {
 
     const balanceData = [
         { name: "Total Balance", amount: totalBalance },
@@ -19,7 +25,7 @@ const FinanceOverview = ({totalBalance, totalIncome, totalExpenses}) => {
             <CustomPieChart
                 data={balanceData}
                 label="Total Balance"
-                totalAmount={`$${totalBalance}`}
+                totalAmount={totalBalance}
                 colors={COLORS}
                 showTextAnchor={true}
             />

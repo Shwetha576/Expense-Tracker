@@ -1,9 +1,17 @@
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
-const Input=({ value, onChange, label, placeholder, type })=>{
-    const [ showPassword, setShowPassword ] = React.useState(false);
-    const toggleshowPassword = () => {
+interface InputProps {
+    value: string;
+    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+    label: string;
+    placeholder?: string;
+    type: string;
+}
+
+const Input = ({ value, onChange, label, placeholder, type }: InputProps) => {
+    const [showPassword, setShowPassword] = useState(false);
+    const toggleShowPassword = () => {
         setShowPassword(!showPassword);
     };
     return(
@@ -24,13 +32,13 @@ const Input=({ value, onChange, label, placeholder, type })=>{
                         <FaRegEye
                             size={22}
                             className="text-primary cursor-pointer"
-                            onClick={() => toggleshowPassword()}
+                            onClick={() => toggleShowPassword()}
                         />
                         ):(
                         <FaRegEyeSlash
                             size={22}
                             className="text-slate-400 cursor-pointer"
-                            onClick={() => toggleshowPassword()}  
+                            onClick={() => toggleShowPassword()}  
                         /> 
                         )}
                     </>    

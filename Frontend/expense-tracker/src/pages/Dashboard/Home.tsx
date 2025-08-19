@@ -10,28 +10,29 @@ import{ LuHandCoins, LuWalletMinimal } from "react-icons/lu"
 import { addThousandSeparator } from "../../utils/helper";
 import RecentTransactions from "../../components/Dashboard/RecentTransactions";
 import FinanceOverview from "../../components/Dashboard/FinanceOverview";
-import ExpenseTransactions from "../../components/Dashboard/ExpenseTransactions";
+import ExpenseTransactions, { Transaction } from "../../components/Dashboard/ExpenseTransactions";
 import Last30DaysExpenses from "../../components/Dashboard/Last30DaysExpenses";
 import RecentIncomeWithChart from "../../components/Dashboard/RecentIncomeWithChart";
 import RecentIncome from "../../components/Dashboard/RecentIncome";
+
+
+interface DashboardData {
+  totalBalance: number;
+  totalIncome: number;
+  totalExpenses: number;
+  recentTransactions: Transaction[];
+  last30DaysExpenses?: {
+    transactions: Transaction[];
+  };
+  last60DaysIncome?: {
+    transactions: Transaction[];
+  };
+}
 
 const Home = () => {
   useUserAuth();
 
   const navigate = useNavigate();
-
-  interface DashboardData {
-    totalBalance: number;
-    totalIncome: number;
-    totalExpenses: number;
-    recentTransactions: any[]; // Replace 'any' with your transaction type if available
-    last30DaysExpenses?: {
-      transactions: any[]; // Replace 'any' with your transaction type if available
-    };
-    last60DaysIncome?: {
-      transactions: any[]; // Replace 'any' with your transaction type if available
-    };
-  }
   
   const [dashboardData, setDashboardData] = React.useState<DashboardData | null>(null);
   const [loading, setLoading] = React.useState(false);
@@ -89,7 +90,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
           <RecentTransactions
-            transactions={dashboardData?.recentTransactions}
+            transactions={dashboardData?.recentTransactions || []}
             onSeeMore={() =>navigate("/expense")}
           />
 

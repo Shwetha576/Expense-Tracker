@@ -1,21 +1,13 @@
-import React, { useEffect } from "react";
 import { LuPlus}from "react-icons/lu"
 import CustomBarChart from "../../components/Charts/CustomBarChart";
-import { prepareExpenseBarChartData } from "../../utils/helper";
+import { Transaction } from "../Dashboard/ExpenseTransactions";
 
-type ExpenseBarChartData = { category: string; amount: number };
+interface ExpenseOverviewProps {
+    transactions: Transaction[];
+    onAddExpense: () => void;
+}
 
-const ExpenseOverview = ({ transactions, onAddExpense }) => {
-
-    const [chartData, setChartData] = React.useState<ExpenseBarChartData[]>([]);
-
-    useEffect(() => {
-        const result = prepareExpenseBarChartData(transactions);
-        setChartData(result);
-
-        return () => {};
-    }, [transactions]);
-
+const ExpenseOverview = ({ transactions, onAddExpense }: ExpenseOverviewProps) => {
     return <div className="card">
         <div className="flex items-center justify-between">
             <div className="">
@@ -31,7 +23,7 @@ const ExpenseOverview = ({ transactions, onAddExpense }) => {
             </button>
         </div>
         <div className="mt-10">
-            <CustomBarChart data={chartData} />
+            <CustomBarChart data={transactions} />
         </div>
     </div>
 };

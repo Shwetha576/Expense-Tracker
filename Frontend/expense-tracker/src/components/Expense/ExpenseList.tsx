@@ -2,8 +2,16 @@ import React from "react";
 import { LuDownload } from "react-icons/lu";
 import TransactionInfoCard from "../Cards/TransactionInfoCard";
 import moment from "moment";
+import { Transaction } from "../Dashboard/ExpenseTransactions";
 
-const ExpenseList =({ transactions, onDelete, onDownload, onEdit }) => {
+interface ExpenseListProps {
+    transactions: Transaction[];
+    onDelete: (id: string) => void;
+    onDownload: () => void;
+    onEdit: (id: string) => void;
+}
+
+const ExpenseList =({ transactions, onDelete, onDownload, onEdit }: ExpenseListProps) => {
     return (
         <div className="card">
             <div className="flex items-center justify-between">
@@ -15,7 +23,7 @@ const ExpenseList =({ transactions, onDelete, onDownload, onEdit }) => {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2">
-                {transactions?.map((expense: { _id: React.Key; category: unknown; icon: unknown; date: moment.MomentInput; amount: unknown; }) => (
+                {transactions?.map((expense: Transaction) => (
                     <TransactionInfoCard
                         key={expense._id}
                         title={expense.category}

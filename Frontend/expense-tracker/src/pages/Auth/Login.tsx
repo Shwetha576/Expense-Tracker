@@ -46,8 +46,15 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (error) {
-      if (error.response && error.response.data && error.response.data.message) {
-        setError(error.response.data.message);
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "response" in error &&
+        (error as any).response &&
+        (error as any).response.data &&
+        (error as any).response.data.message
+      ) {
+        setError((error as any).response.data.message);
       } else {
         setError("Something went wrong, please try again later.");
       }

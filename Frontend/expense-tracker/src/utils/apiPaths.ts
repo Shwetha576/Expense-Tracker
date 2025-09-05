@@ -1,5 +1,5 @@
 // export const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-export const BASE_URL = "https://api.expense-tracker.shwetha-m.in";
+export const BASE_URL = "https://api.expense-tracker.maverick-apps.com";
 
 export const API_PATHS = {
     AUTH: {
